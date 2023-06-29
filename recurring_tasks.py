@@ -1,6 +1,7 @@
 import os
 import requests
 import json
+import datetime
 
 # Get your Notion API token from environment variables
 NOTION_TOKEN = os.environ['NOTION_SECRET_KEY']
@@ -18,31 +19,53 @@ headers = {
     'Content-Type': 'application/json'
 }
 
-# The body of the API request. This includes the ID of the database you're adding the page to and the properties of the page
-body = {
-    'parent': { 'database_id': DATABASE_ID },
-    'properties': {
-        'Name': {
-            'title': [
-                {
-                    'text': {
-                        'content': 'Take out the garbage'
-                    }
-                }
-            ]
-        },
-        'Analog': {
-            'select': {
-                'name': 'Today'
-            }
-        },
-        # Add more properties here
-    }
+# Map each day of the week to a list of tasks that need to be done on that day
+tasks = {
+    'Monday': ['Laundry', 'Entry Way and Laundry Room Cleaned', 'Github Commit', 'Sololearn Daily Learn Daily Lesson'],
+    'Tuesday': [],
+    'Wednesday': ['Clean Bathrooms', 'Laundry'],
+    'Thursday': ['Order Groceries'],
+    'Friday': ['Basement Straightened and Vacuumed', 'Floors Vacuumed and Mopped', 'Laundry'],
+    'Saturday': [],
+    'Sunday': ['Put out trash'],
 }
 
-# Send the API request
-response = requests.post(url, headers=headers, data=json.dumps(body))
+#Get the current day of the week
+day_of_week = datetime.datetime.now().strftime('%A')
 
-# Print the response
-print(response.json())
+# Loop over the tasks for the current day of the week
+for task_name in tasks[day_of_week]:
+
+    # The body of the API request. This includes the ID of the database you're adding the page to and the properties of the page
+    body = {
+        'parent': { 'database_id': DATABASE_ID },
+        'properties': {
+            'Name': {
+                'title': [
+                    {
+                        'text': {
+                            'content': task_name
+                        }
+                    }
+                ]
+            },
+            'Analog': {
+                'select': {
+                    'name': 'Today'
+                }
+            },
+            # Add more properties here
+        }
+    }
+
+    # Send the API request
+    response = requests.post(url, headers=headers, data=json.dumps(body))
+
+    # Print the response
+    print(response.json())
+
+
+
+
+
 
