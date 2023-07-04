@@ -21,46 +21,29 @@ headers = {
 
 # Map each day of the week to a list of tasks that need to be done on that day
 weekly_tasks = {
-    'Monday': ['Laundry', 'Entry Way and Laundry Room Cleaned', 'Maisy Ear Drops (till July 12)'],
-    'Tuesday': ['Make sure bills are paid', 'Maisy Ear Drops (till July 12)'],
-    'Wednesday': ['Clean Bathrooms', 'Laundry', 'Maisy Ear Drops (till July 12)'],
-    'Thursday': ['Order Groceries','Maisy Ear Drops (till July 12)'],
-    'Friday': ['Basement Straightened and Vacuumed', 'Floors Vacuumed and Mopped', 'Laundry', 'Maisy Ear Drops (till July 12)'],
-    'Saturday': ['Maisy Ear Drops (till July 12)'],
-    'Sunday': ['Put out trash', 'Maisy Ear Drops (till July 12)'],
+    'Monday': ['Sermon Questions Answered', 'Practice Musical Part 15min'],
+    'Tuesday': ['Sermon Boxes Filled', 'Youth Group Planned'],
+    'Wednesday': ['Sermon Outline Completed', 'Bulletin Notes Sent'],
+    'Thursday': ['Sermon Manuscript Completed'],
+    'Friday': ['Practice Sermon Delivery', 'Final Sermon Edits'],
+    'Saturday': ['Review Sermon Notes Before Bed'],
+    'Sunday': ['Take a Nap'] 
 }
 
 #Monthly Tasks
 monthly_tasks = {
     1: [], 
-    2: ['Skip Hello Fresh'],
-    3: ['Monthly Income and Expenses up to date'],
-    24: ['Heart and flea meds for pets'],
-    28: ['Income and expenses prepped for the month']
+    2: [],
+    3: [],
+    4: ['Long Term Youth Group Planning Session'],
 }
 
-#Quarterly Tasks
-quarterly_tasks = {
-    1: ['Call to set up oil changes for vehicles', 'Pay Q4 taxes', 'Descale Keurig'],
-    2: ['Change Roomba Air filter'],
-    3: ['Change air filter in AC'],
-    4: ['Call to set up oil changes for vehicles', 'Pay Q1 taxes'],
-    5: ['Change Roomba Air filter'],
-    6: ['Pay Q2 taxes', 'Change Air Filter in AC'],
-    7: ['Call to set up oil changes for vehicles'],
-    8: ['Change Roomba air filter'],
-    9: ['Pay Q3 taxes', 'Change Air Filter in AC'],
-    10: ['Call to set up oil changes for vehicles'],
-    11: ['Change Roomba air filter'],
-    12: ['Change Air Filter in AC']   
-}
+
 #Get the current day of the week
 day_of_week = datetime.datetime.now().strftime('%A')
 
 #Get current day of the month
 day_of_month = datetime.datetime.now().strftime('%A')
-
-
 def send_to_notion(task_name, due_date, analog_name=None):
     body = {
         'parent': { 'database_id': DATABASE_ID },
@@ -108,22 +91,10 @@ for task_name in weekly_tasks.get(day_of_week, []):
 # Get current day of the month
 day_of_month = current_date.day
 
-#Get current month
-current_month = current_date.month
-
 # Loop over the tasks for the current day of the month if it's the first day of the month
 if day_of_month == 1:
     for day, task_list in monthly_tasks.items():
         for task_name in task_list:
             due_date = current_date.replace(day=day)
             send_to_notion(task_name, due_date=due_date)
-
-for task_name in quarterly_tasks.get(current_month, []):
-    send_to_notion(task_name, due_date=current_date)
-
-
-
-
-
-
 
