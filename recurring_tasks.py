@@ -2,6 +2,7 @@ import os
 import requests
 import json
 import datetime
+from datetime import date, datetime
 
 # Get your Notion API tokens from environment variables
 NOTION_TOKEN = os.environ['NOTION_SECRET_KEY']
@@ -56,15 +57,14 @@ def send_to_notion(task_name, due_date, analog_name=None):
         print(f"Error sending task to Notion: {e}")
         return  # Exit the function
 
-    print(response.json())
-    print(f"Response from Notion: {response.json()}")
 
-current_date = datetime.date.today()
 
-# Get the current day of the week
-day_of_week = datetime.datetime.now().strftime('%A')
-
-# Get current day of the month
+#Get current date information
+current_date = date.today()
+current_week_number = current_date.isocalendar()[1]
+current_month = current_date.month
+current_year = current_date.year
+day_of_week = datetime.now().strftime('%A')
 day_of_month = current_date.day
 
 # Get recurring tasks
@@ -81,15 +81,48 @@ for task in recurring_tasks:
     task_name = task['properties']['Task Name']['title'][0]['plain_text']
     task_days_of_week = [option['name'] for option in task['properties'].get('Days of Week', {}).get('multi_select', [])]
     task_days_of_month = [int(option['name']) for option in task['properties'].get('Days of Month', {}).get('multi_select', [])]
+    task_frequency = task['properties'].get('Frequency', {}).get('select', {}).get('name')
+    task_start_date = task['properties'].get('Start Date', {}).get('date', {}).get('start')
+    print(f"Adding {task_name} to Next Actions database") 
 
-    # Add task if it's due today (based on day of week)
-    if day_of_week in task_days_of_week:
-        print(f"Adding task '{task_name}' to the tasks database.")
+
+
+    if task_frequency == 'Daily':
         send_to_notion(task_name, due_date=current_date, analog_name='Today')
 
+    elif task_frequency == 'Weekly' and day_of_week in task_days_of_week:
+        send_to_notion(task_name, due_date=current_date, analog_name='Today')
 
-    # Add task if it's due today (based on day of month)
-    if day_of_month in task_days_of_month:
-        print(f"Adding task '{task_name}' to the tasks database.")
+    elif task_frequency == 'Every Other Week' and day_of_week in task_days_of_week:
+        # Parse the start date into a datetime object
+        start_date = datetime.strptime(task_start_date, '%Y-%m-%d')
+        start_week_number = start_date.isocalendar()[1]
+        # Check if the difference between the current week number and the start week number is even
+        if (current_week_number - start_week_number) % 2 == 0:
+            send_to_notion(task_name, due_date=current_date, analog_name='Today')
+
+
+
+    # For monthly tasks
+    elif task_frequency == 'Monthly' and day_of_month == 1:
+        task_due_days = [int(option['name']) for option in task['properties'].get('Days of Month', {}).get('multi_select', [])]
+        for due_day in task_due_days:
+            print(f"Adding monthly task '{task_name}' to the tasks database for the date: {current_year}-{current_month}-{due_day}.")
+            due_date = date(current_year, current_month, due_day)
+            send_to_notion(task_name, due_date=due_date)
+
+
+    elif task_frequency == 'Every Other Month' and day_of_month in task_days_of_month and current_month % 2 == 0:
         send_to_notion(task_name, due_date=current_date)
 
+
+    # For yearly tasks
+    elif 'Months' in task['properties']:
+        task_months = [int(option['name']) for option in task['properties']['Months']['multi_select']]
+        task_due_days = [int(option['name']) for option in task['properties'].get('Days of Month', {}).get('multi_select', [])]
+        if current_month in task_months and day_of_month == 1:
+            for due_day in task_due_days:
+                print(f"Adding yearly task '{task_name}' to the tasks database for the date: {current_year}-{current_month}-{due_day}.")
+                due_date = date(current_year, current_month, due_day)
+                send_to_notion(task_name, due_date=due_date)
+ 
