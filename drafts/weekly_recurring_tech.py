@@ -21,13 +21,13 @@ headers = {
 
 # Map each day of the week to a list of tasks that need to be done on that day
 tasks = {
-    'Monday': ['Github Commit', 'Sololearn Daily Lesson'],
-    'Tuesday': ['Github Commit', 'Sololearn Daily Lesson'],
-    'Wednesday': ['Github Commit', 'Sololearn Daily Lesson'],
-    'Thursday': ['Github Commit', 'Sololearn Daily Lesson'],
-    'Friday': ['Github Commit', 'Sololearn Daily Lesson'],
-    'Saturday': ['Github Commit', 'Sololearn Daily Lesson'],
-    'Sunday': ['Github Commit', 'Sololearn Daily Lesson'],
+    'Monday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
+    'Tuesday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
+    'Wednesday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
+    'Thursday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
+    'Friday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
+    'Saturday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
+    'Sunday': ['Github Commit', 'Sololearn Daily Lesson', 'AWS SA Challenge'],
 }
 
 #Get the current day of the week

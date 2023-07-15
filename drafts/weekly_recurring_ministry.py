@@ -21,13 +21,13 @@ headers = {
 
 # Map each day of the week to a list of tasks that need to be done on that day
 weekly_tasks = {
-    'Monday': ['Sermon Questions Answered', 'Practice Musical Part 15min'],
-    'Tuesday': ['Sermon Boxes Filled', 'Youth Group Planned'],
-    'Wednesday': ['Sermon Outline Completed', 'Bulletin Notes Sent'],
-    'Thursday': ['Sermon Manuscript Completed'],
-    'Friday': ['Practice Sermon Delivery', 'Final Sermon Edits'],
-    'Saturday': ['Review Sermon Notes Before Bed'],
-    'Sunday': ['Take a Nap'] 
+    'Monday': ['Morning Journal Entries','Sermon Questions Answered', 'Practice Musical Part 15min'],
+    'Tuesday': ['Morning Journal Entries','Sermon Boxes Filled', 'Youth Group Planned'],
+    'Wednesday': ['Morning Journal Entries','Sermon Outline Completed', 'Bulletin Notes Sent'],
+    'Thursday': ['Morning Journal Entries','Sermon Manuscript Completed'],
+    'Friday': ['Morning Journal Entries','Practice Sermon Delivery', 'Final Sermon Edits'],
+    'Saturday': ['Morning Journal Entries','Review Sermon Notes Before Bed'],
+    'Sunday': ['Morning Journal Entries','Take a Nap'] 
 }
 
 #Monthly Tasks
